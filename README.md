@@ -1,2 +1,2 @@
 # frac_Fourier
-Fractional Fourier ransforms using Pytorch.
+Fractional Fourier transforms using Pytorch.

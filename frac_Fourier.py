@@ -27,14 +27,14 @@ def fractional_Fourier_transform(x, a, t, dt0, a0, N=0):
     anew = a + a0
     xa = torch.zeros(2*N, dtype=torch.complex128)
     ta = (torch.arange(len(xa)))/len(xa)*tfmax - tfmax/2
-    xinterp = sincinterp(x)
+    x = sincinterp(x)
     phi = torch.Tensor([a*math.pi/2])
     alpha = 1/(torch.tan(phi)+1e-6)
     beta = 1/(torch.sin(phi)+1e-6)
     print(tfmax**2, N)
     Aphi = (torch.exp(-1j*math.pi*torch.sign(torch.sin(phi))/4+1j*phi/2))/(torch.sqrt(torch.abs(torch.sin(phi)))+1e-6)
     for i in range(len(ta)):        
-        xa[i] = Aphi/(2*tfmax)*torch.exp(1j*math.pi*(alpha-beta)*(ta[i])**2)*torch.sum(torch.exp(1j*math.pi*beta*(ta[i]-ta)**2)*torch.exp(1j*math.pi*(alpha-beta)*(ta)**2)*xinterp)
+        xa[i] = Aphi/(2*tfmax)*torch.exp(1j*math.pi*(alpha-beta)*(ta[i])**2)*torch.sum(torch.exp(1j*math.pi*beta*(ta[i]-ta)**2)*torch.exp(1j*math.pi*(alpha-beta)*(ta)**2)*x)
     
     if anew%2 != 0:
         ta = ta*torch.sin(anew%2*math.pi/2)/dt0/ta[-1]/2
