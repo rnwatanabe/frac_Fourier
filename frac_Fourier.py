@@ -38,6 +38,7 @@ def fractional_Fourier_transform(x, a, t, dt0, a0, N=0):
     beta = 1/(torch.sin(phi)+1e-6)
     print('6')
     Aphi = (torch.exp(-1j*math.pi*torch.sign(torch.sin(phi))/4+1j*phi/2))/(torch.sqrt(torch.abs(torch.sin(phi)))+1e-6)
+    print('9')
     for i in range(len(ta)):        
         xa[i] = Aphi/(2*tfmax)*torch.exp(1j*math.pi*(alpha-beta)*(ta[i])**2)*torch.sum(torch.exp(1j*math.pi*beta*(ta[i]-ta)**2)*torch.exp(1j*math.pi*(alpha-beta)*(ta)**2)*x)
     print('7')
