@@ -1,7 +1,7 @@
 import torch
 import math
 
-__version__ = 'dev'
+__version__ = '0.1.0.dev0'
 
 def FrFT(x, a, t, dt, a0=0, N=0):
     
