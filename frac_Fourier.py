@@ -9,12 +9,17 @@ def FrFT(x, a, t, dt, a0=0, N=0):
     if torch.abs(a%1) > 1e-6:
         angfr = torch.sign(a)*(torch.abs(a)%1)
         if torch.abs(angfr) < 0.5:
+            print('1')
             x, t, ang = fractional_Fourier_transform(x, angfr - 1,t, dt, ang, N)
+            print('2')
             x, t, ang = fractional_Fourier_transform(x, torch.Tensor([1]), t, dt, ang, N)
         else:
+            print('3')
             x, t, ang = fractional_Fourier_transform(x, angfr, t, dt, ang, N)
     for i in range(int(a//1)):
+        print('4')
         x, t, ang = fractional_Fourier_transform(x,torch.Tensor([1]),t, dt, ang, N)
+    print('5')
     return x, t, ang
 
 def fractional_Fourier_transform(x, a, t, dt0, a0, N=0):
