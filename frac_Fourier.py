@@ -36,16 +36,16 @@ def fractional_Fourier_transform(x, a, t, dt0, a0, N=0):
     phi = torch.Tensor([a*math.pi/2])
     alpha = 1/(torch.tan(phi)+1e-6)
     beta = 1/(torch.sin(phi)+1e-6)
-    
+    print('6')
     Aphi = (torch.exp(-1j*math.pi*torch.sign(torch.sin(phi))/4+1j*phi/2))/(torch.sqrt(torch.abs(torch.sin(phi)))+1e-6)
     for i in range(len(ta)):        
         xa[i] = Aphi/(2*tfmax)*torch.exp(1j*math.pi*(alpha-beta)*(ta[i])**2)*torch.sum(torch.exp(1j*math.pi*beta*(ta[i]-ta)**2)*torch.exp(1j*math.pi*(alpha-beta)*(ta)**2)*x)
-    
+    print('7')
     if anew%2 != 0:
         ta = ta*torch.sin(anew%2*math.pi/2)/dt0/ta[-1]/2
     else:
         ta = ta*N*dt0/ta[-1]/2
-    
+    print('8')
     return xa[::2], ta[::2], anew
 
 def fftconvolve(in1, in2):
