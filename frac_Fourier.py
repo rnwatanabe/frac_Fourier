@@ -65,5 +65,5 @@ def sincinterp(x):
     y = torch.zeros(len(sinc_signal), dtype=x.dtype,)
     y[:2*N:2] = x
     
-    xint = fftconvolve(y, sinc_signal)
-    return xint[2*N:]
+    xint = fftconvolve(y, sinc_signal)[2*N:]
+    return xint
