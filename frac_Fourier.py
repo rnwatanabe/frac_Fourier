@@ -13,7 +13,7 @@ def FrFT(x, a, t, dt, a0=0, N=0):
             x, t, ang = fractional_Fourier_transform(x, torch.Tensor([1]), t, dt, ang, N)
         else:
             x, t, ang = fractional_Fourier_transform(x, angfr, t, dt, ang, N)
-    for i in range(int(torch.div(a, 1, rounding_mode='floor'))):
+    for i in range(int(a//1)):
         x, t, ang = fractional_Fourier_transform(x,torch.Tensor([1]),t, dt, ang, N)
     return x, t, ang
 
