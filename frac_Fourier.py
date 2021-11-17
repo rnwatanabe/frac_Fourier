@@ -30,7 +30,7 @@ def fractional_Fourier_transform(x, a, t, dt0, a0, N=0):
     tfmax = torch.sqrt(torch.round(tamax*famax))
     if N == 0: N = len(x)
     anew = a + a0
-    xa = torch.zeros(2*N,1, dtype=torch.complex128)
+    xa = torch.zeros(2*N,1, dtype=torch.complex64)
     ta = ((torch.arange(len(xa)))/len(xa)*tfmax - tfmax/2).view(-1,1)
     print(ta.requires_grad)
     print(xa.requires_grad)
