@@ -6,14 +6,15 @@ __version__ = '0.1.0.dev0'
 def FrFT(x, a, t, dt, a0=0, N=0):
     
     ang = a0
-    if torch.abs(a%1) > 1e-6:
-        angfr = torch.sign(a)*(torch.abs(a)%1)
+    
+    if torch.abs(torch.fmod(a,1)) > 1e-6:        
+        angfr = torch.fmod(a,1)
         if torch.abs(angfr) < 0.5:
             x, t, ang = fractional_Fourier_transform(x, angfr - 1,t, dt, ang, N)
             x, t, ang = fractional_Fourier_transform(x, torch.Tensor([1]), t, dt, ang, N)
         else:
             x, t, ang = fractional_Fourier_transform(x, angfr, t, dt, ang, N)
-    for i in range(int(a//1)):
+    for i in range(int(torch.div(a, 1, rounding_mode='trunc'))):
         x, t, ang = fractional_Fourier_transform(x,torch.Tensor([1]),t, dt, ang, N)
     return x, t, ang
 
@@ -47,7 +48,7 @@ def fractional_Fourier_transform(x, a, t, dt0, a0, N=0):
         ta = ta*torch.sin(anew%2*math.pi/2)/dt0/ta[-1]/2
     else:
         ta = ta*N*dt0/ta[-1]/2
-    return xa[::2,0], ta[::2,0], anew
+    return xa1[::2,0], ta[::2,0], anew
 
 def fftconvolve(in1, in2):
     # Convolve two N-dimensional arrays using FFT. 

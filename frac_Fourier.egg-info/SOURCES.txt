@@ -1,0 +1,9 @@
+LICENSE
+README.md
+frac_Fourier.py
+setup.py
+frac_Fourier.egg-info/PKG-INFO
+frac_Fourier.egg-info/SOURCES.txt
+frac_Fourier.egg-info/dependency_links.txt
+frac_Fourier.egg-info/requires.txt
+frac_Fourier.egg-info/top_level.txt
