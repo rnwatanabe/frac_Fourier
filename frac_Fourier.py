@@ -34,6 +34,8 @@ def fractional_Fourier_transform(x, a, t, dt0, a0, N=0):
     ta = (torch.arange(len(xa)))/len(xa)*tfmax - tfmax/2
     print(ta.requires_grad)
     print(xa.requires_grad)
+    print(x.requires_grad)
+
     x = sincinterp(x)
     phi = torch.Tensor([a*math.pi/2])
     alpha = 1/(torch.tan(phi)+1e-6)
