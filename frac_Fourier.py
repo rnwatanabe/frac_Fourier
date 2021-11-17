@@ -30,13 +30,14 @@ def fractional_Fourier_transform(x, a, t, dt0, a0, N=0):
     tfmax = torch.sqrt(torch.round(tamax*famax))
     if N == 0: N = len(x)
     anew = a + a0
-    xa = torch.zeros(2*N, dtype=torch.complex128)
-    ta = (torch.arange(len(xa)))/len(xa)*tfmax - tfmax/2
+    xa = torch.zeros(2*N,1, dtype=torch.complex128)
+    ta = ((torch.arange(len(xa)))/len(xa)*tfmax - tfmax/2).view(-1,1)
     print(ta.requires_grad)
     print(xa.requires_grad)
     print(x.requires_grad)
 
     x = sincinterp(x)
+    x = x.view(-1,1)
     phi = torch.Tensor([a*math.pi/2])
     alpha = 1/(torch.tan(phi)+1e-6)
     beta = 1/(torch.sin(phi)+1e-6)
@@ -45,10 +46,13 @@ def fractional_Fourier_transform(x, a, t, dt0, a0, N=0):
     print('9')
     print(ta.shape)
     print(xa.shape)
+    T = Aphi/(2*tfmax)*torch.exp(1j*math.pi*(alpha-beta)*ta.T**2)*torch.exp(1j*math.pi*beta*(ta.T-ta)**2)*torch.exp(1j*math.pi*(alpha-beta)*ta**2)
+    xa1 = T@x
     for i in range(len(ta)):      
         if i%100 == 0: print(i)  
         xa[i] = Aphi/(2*tfmax)*torch.exp(1j*math.pi*(alpha-beta)*ta[i]**2)*torch.sum(torch.exp(1j*math.pi*beta*(ta[i]-ta)**2)*torch.exp(1j*math.pi*(alpha-beta)*ta**2)*x)
     print('7')
+    print(np.all(np.abs(xa-xa1)<1e-12))
     if anew%2 != 0:
         ta = ta*torch.sin(anew%2*math.pi/2)/dt0/ta[-1]/2
     else:
@@ -73,5 +77,5 @@ def sincinterp(x):
     y = torch.zeros(len(sinc_signal), dtype=x.dtype,)
     y[:2*N:2] = x
     
-    xint = fftconvolve(y, sinc_signal)[2*N:]
-    return xint
+    y = fftconvolve(y, sinc_signal)[2*N:]
+    return y
