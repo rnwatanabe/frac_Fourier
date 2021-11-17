@@ -60,7 +60,7 @@ def fractional_Fourier_transform(x, a, t, dt0, a0, N=0):
     else:
         ta = ta*N*dt0/ta[-1]/2
     print('8')
-    return xa[::2], ta[::2], anew
+    return xa[::2,0], ta[::2,0], anew
 
 def fftconvolve(in1, in2):
     # Convolve two N-dimensional arrays using FFT. 
