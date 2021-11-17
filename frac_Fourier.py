@@ -48,7 +48,7 @@ def fractional_Fourier_transform(x, a, t, dt0, a0, N=0):
         ta = ta*torch.sin(anew%2*math.pi/2)/dt0/ta[-1]/2
     else:
         ta = ta*N*dt0/ta[-1]/2
-    return xa1[::2,0], ta[::2,0], anew
+    return xa[::2,0], ta[::2,0], anew
 
 def fftconvolve(in1, in2):
     # Convolve two N-dimensional arrays using FFT. 
@@ -61,11 +61,11 @@ def fftconvolve(in1, in2):
 
     return ret
 
-def sincinterp(x):
+def sincinterp(x, times=2):
     N = len(x)
-    sinc_signal = torch.sinc(torch.arange(-2*N, 2*N)/2)
+    sinc_signal = torch.sinc(torch.arange(-times*N, times*N)/times)
     y = torch.zeros(len(sinc_signal), dtype=x.dtype,)
-    y[:2*N:2] = x
+    y[:times*N:times] = x
     
-    y = fftconvolve(y, sinc_signal)[2*N:]
+    y = fftconvolve(y, sinc_signal)[times*N:]
     return y
