@@ -9,17 +9,12 @@ def FrFT(x, a, t, dt, a0=0, N=0):
     if torch.abs(a%1) > 1e-6:
         angfr = torch.sign(a)*(torch.abs(a)%1)
         if torch.abs(angfr) < 0.5:
-            print('1')
             x, t, ang = fractional_Fourier_transform(x, angfr - 1,t, dt, ang, N)
-            print('2')
             x, t, ang = fractional_Fourier_transform(x, torch.Tensor([1]), t, dt, ang, N)
         else:
-            print('3')
             x, t, ang = fractional_Fourier_transform(x, angfr, t, dt, ang, N)
-    for i in range(int(a//1)):
-        print('4')
+    for i in range(int(torch.div(a, 1, rounding_mode='floor'))):
         x, t, ang = fractional_Fourier_transform(x,torch.Tensor([1]),t, dt, ang, N)
-    print('5')
     return x, t, ang
 
 def fractional_Fourier_transform(x, a, t, dt0, a0, N=0):
@@ -41,27 +36,17 @@ def fractional_Fourier_transform(x, a, t, dt0, a0, N=0):
     phi = torch.Tensor([a*math.pi/2])
     alpha = 1/(torch.tan(phi)+1e-6)
     beta = 1/(torch.sin(phi)+1e-6)
-    print('6')
     Aphi = (torch.exp(-1j*math.pi*torch.sign(torch.sin(phi))/4+1j*phi/2))/(torch.sqrt(torch.abs(torch.sin(phi)))+1e-6)
-    print('9')
-    print(ta.shape)
-    print(xa.shape)
     T = Aphi/(2*tfmax)*torch.exp(1j*math.pi*(alpha-beta)*ta.T**2)*torch.exp(1j*math.pi*beta*(ta.T-ta)**2)*torch.exp(1j*math.pi*(alpha-beta)*ta**2)
-    print(T.shape)
-    print(T.dtype)
-    print(x.dtype)
     xa1 = T@x
-    print('10')
     for i in range(len(ta)):      
         if i%100 == 0: print(i)  
         xa[i] = Aphi/(2*tfmax)*torch.exp(1j*math.pi*(alpha-beta)*ta[i]**2)*torch.sum(torch.exp(1j*math.pi*beta*(ta[i]-ta)**2)*torch.exp(1j*math.pi*(alpha-beta)*ta**2)*x)
-    print('7')
     print(torch.all(torch.abs(xa-xa1)<1e-12))
     if anew%2 != 0:
         ta = ta*torch.sin(anew%2*math.pi/2)/dt0/ta[-1]/2
     else:
         ta = ta*N*dt0/ta[-1]/2
-    print('8')
     return xa[::2,0], ta[::2,0], anew
 
 def fftconvolve(in1, in2):
