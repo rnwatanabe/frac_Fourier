@@ -52,7 +52,7 @@ def fractional_Fourier_transform(x, a, t, dt0, a0, N=0):
         if i%100 == 0: print(i)  
         xa[i] = Aphi/(2*tfmax)*torch.exp(1j*math.pi*(alpha-beta)*ta[i]**2)*torch.sum(torch.exp(1j*math.pi*beta*(ta[i]-ta)**2)*torch.exp(1j*math.pi*(alpha-beta)*ta**2)*x)
     print('7')
-    print(np.all(np.abs(xa-xa1)<1e-12))
+    print(torch.all(torch.abs(xa-xa1)<1e-12))
     if anew%2 != 0:
         ta = ta*torch.sin(anew%2*math.pi/2)/dt0/ta[-1]/2
     else:
